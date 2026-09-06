@@ -143,4 +143,4 @@ This repository is provided for educational purposes under the MIT License.
 **Last Updated**: 25/08/2026
 **Course Name**: CSC 406 - Artificial Intelligence
 **Course Level**: Beginner to Intermediate NLP / Linguistics  
-**Duration**: 1 week - Due September 1st 2026
+**Duration**: 1 week - Due September 1st ### Abubakar Sudais Fodio – Data Collector
