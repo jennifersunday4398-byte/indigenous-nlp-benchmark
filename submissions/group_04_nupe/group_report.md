@@ -1,7 +1,7 @@
 # Group 04 — Nupe (Nupeci) — HW1 submission import numpy as np
 
 class BigramModel:
-    """A simple bigram language model."""
+    """A simple bigram language model.""”
     
     def __init__(self):
         self.bigrams = {}
