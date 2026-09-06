@@ -1,19 +1,55 @@
-# Group 04 — Nupe (Nupeci) — HW1 Report
+# Group 04 — Nupe (Nupeci) — HW1 submission import numpy as np
 
-## Data Sources
-- 25 hand-collected documents (Nupe poetry/prose) from Isyaku Bala Ibrahim's blog: https://ibibrahim.blogspot.com — bilingual (Nupe + English translation), English portion stripped during cleaning.
-- Additional articles scraped live from Nupe Wikipedia (https://nup.wikipedia.org) via the public MediaWiki API, using our own scraper written and run inside HW1_assignment.ipynb.
-
-## Corpus Metrics
-- Total processed sentences: 3,432 (3,088 train / 344 held-out)
-- Vocabulary size (V): 7,525 (including <s> / </s> boundary tokens)
-- Zipfian exponent (s): 0.92
-
-## N-Gram Model
-- Unigram and Bigram models built from scratch (Python dict-based frequency counts)
-- Laplace (add-1) smoothing applied to the bigram model
-- Bigram perplexity on our own 90/10 held-out split: 1140.09
-- Bigram perplexity on instructor's blind test set: 2738.66
-
-## Notes
-- Held-out perplexity is high relative to typical English benchmarks, expected given a small training set (3,088 sentences) with a comparatively large vocabulary (7,525 types) — Laplace smoothing is known to over-distribute probability mass across the large number of unseen bigrams in sparse settings. Will re-evaluate once the instructor's blind test file is available.
+class BigramModel:
+    """A simple bigram language model."""
+    
+    def __init__(self):
+        self.bigrams = {}
+        self.vocab_size = 0
+    
+    def fit(self, corpus_path):
+        """Train the model on a corpus file."""
+        self.bigrams = {}
+        words = []
+        
+        with open(corpus_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line_words = line.strip().split()
+                words.extend(line_words)
+        
+        self.vocab_size = len(set(words))
+        
+        for i in range(len(words) - 1):
+            bigram = (words[i], words[i + 1])
+            self.bigrams[bigram] = self.bigrams.get(bigram, 0) + 1
+        
+        return len(self.bigrams)
+    
+    def compute_perplexity(self, test_path):
+        """Calculate perplexity on a test file."""
+        words = []
+        
+        with open(test_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line_words = line.strip().split()
+                words.extend(line_words)
+        
+        if len(words) < 2:
+            return 1.0
+        
+        log_prob = 0.0
+        bigram_count = 0
+        
+        for i in range(len(words) - 1):
+            bigram = (words[i], words[i + 1])
+            
+            if bigram in self.bigrams:
+                prob = self.bigrams[bigram] / sum(self.bigrams.values())
+            else:
+                prob = 1e-10
+            
+            log_prob += -np.log(prob)
+            bigram_count += 1
+        
+        perplexity = np.exp(log_prob / bigram_count)
+        return perplexity
