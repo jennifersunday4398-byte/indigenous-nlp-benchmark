@@ -2,7 +2,7 @@
 
 A university-level low-resource Natural Language Processing assignment focusing on **Nupe** and **Gbagyi** languages.
 
-## Overview
+## Overvie
 
 This repository serves as a starter template for students learning fundamental NLP concepts through hands-on work with African low-resource languages. The assignment emphasizes:
 
